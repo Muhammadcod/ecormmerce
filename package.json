@@ -1,0 +1,17 @@
+{
+  "name": "ecormmerc",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:Muhammadcod/ecormmerce.git",
+  "author": "adebayo mohammed <adebayomuhammad73@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^7.22.0",
+    "eslint-config-airbnb-typescript-prettier": "^4.2.0",
+    "prettier": "^2.2.1"
+  },
+  "scripts": {
+    "format": "prettier --write src/**/*.{js,jsx,ts,tsx}",
+    "lint": "eslint --fix src/**/*.{js,jsx,ts,tsx}"
+  }
+}
