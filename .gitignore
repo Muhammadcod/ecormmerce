@@ -109,6 +109,6 @@ dist
 .idea/jsLibraryMappings.xml
 .idea/modules.xml
 .idea/vcs.xml
-backend/yarn.lock
-frontend/
-yarn.lock
+.prettierrc.js
+.eslintrc.js
+

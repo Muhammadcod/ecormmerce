@@ -44,7 +44,7 @@ app.post('/api/stuff', (req, res, next) => {
   });
 });
 
-app.post('/api/product', (req, res, next) => {
+app.post('/api/products', (req, res, next) => {
   const product = new Product({
     title: req.body.title,
     quantity: req.body.quantity,
@@ -64,16 +64,15 @@ app.post('/api/product', (req, res, next) => {
     });
 });
 
-app.use('/api/product', (req, res, next) => {
-  Product.find()
-    .then((things) => {
-      res.status(200).json(things);
-    })
-    .catch((error) => {
-      res.status(400).json({
-        error: error,
-      });
-    });
+app.use('/api/products', (req, res, next) => {
+  const stuff = [
+    {
+      title: 'My first thing',
+      price: 4900,
+      quantity: 2,
+    },
+  ];
+  res.status(200).json(stuff);
 });
 
 module.exports = app;
