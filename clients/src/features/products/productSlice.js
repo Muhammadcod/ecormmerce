@@ -45,7 +45,7 @@ export const productSlice = createSlice({
     [fetchProducts.fulfilled]: (state, action) => {
       state.status = 'succeeded';
       // Add any fetched posts to the array
-      state.posts = state.posts.concat(action.payload);
+      state.products = state.products.concat(action.payload);
     },
     [fetchProducts.rejected]: (state, action) => {
       state.status = 'failed';
@@ -59,4 +59,4 @@ export const { productAdded } = productSlice.actions;
 
 export default productSlice.reducer;
 
-export const selectAllProducts = (state) => state.products.products;
+export const selectAllProducts = (state) => state.products;
