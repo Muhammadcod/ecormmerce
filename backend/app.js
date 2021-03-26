@@ -50,6 +50,8 @@ app.post('/api/products', (req, res, next) => {
     quantity: req.body.quantity,
     price: req.body.price,
   });
+  console.log(product);
+
   product
     .save()
     .then(() => {
@@ -65,14 +67,15 @@ app.post('/api/products', (req, res, next) => {
 });
 
 app.use('/api/products', (req, res, next) => {
-  const stuff = [
-    {
-      title: 'My first thing',
-      price: 4900,
-      quantity: 2,
-    },
-  ];
-  res.status(200).json(stuff);
+  Product.find()
+    .then((products) => {
+      res.status(200).json(products);
+    })
+    .catch((error) => {
+      res.status(400).json({
+        error: error,
+      });
+    });
 });
 
 module.exports = app;

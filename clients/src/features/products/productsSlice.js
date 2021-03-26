@@ -5,21 +5,23 @@ import {
   createSelector,
 } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 const productsAdapter = createEntityAdapter({
   sortComparer: (a, b) => b.date.localeCompare(a.date),
 });
 
-const initialState = productsAdapter.getInitialState({
+const initialState = {
   title: '',
   quantity: 0,
   price: 0,
-});
+};
 
 export const fetchProducts = createAsyncThunk(
   'products/fetchProducts',
   async () => {
-    const response = await axios.get('/fakeApi/products');
+    const response = await axios.get('http://localhost:3002/api/products');
+    console.log('==', response);
     return response.products;
   }
 );
@@ -57,6 +59,8 @@ export const productSlice = createSlice({
 
 export const { productAdded } = productSlice.actions;
 
-export default productSlice.reducer;
-
 export const selectAllProducts = (state) => state.products;
+
+export const selectProductStatus = (state) => state.products.status;
+
+export default productSlice.reducer;
