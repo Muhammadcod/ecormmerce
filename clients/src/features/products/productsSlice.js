@@ -2,65 +2,78 @@ import {
   createSlice,
   createAsyncThunk,
   createEntityAdapter,
-  createSelector,
 } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
 
 const productsAdapter = createEntityAdapter({
   sortComparer: (a, b) => b.date.localeCompare(a.date),
 });
 
 const initialState = {
-  title: '',
-  quantity: 0,
-  price: 0,
+  products: [],
+  status: 'idle',
+  error: null,
 };
 
 export const fetchProducts = createAsyncThunk(
   'products/fetchProducts',
   async () => {
     const response = await axios.get('http://localhost:3002/api/products');
-    console.log('==', response);
-    return response.products;
+    return response.data;
   }
 );
 
 export const addNewProduct = createAsyncThunk(
   'product/addProduct',
   async (initialProduct) => {
-    const response = await axios.post('http://localhost:3002/api/products', {
-      product: initialProduct,
-    });
-    return response.product;
+    console.log('===', initialProduct);
+    const response = await axios.post(
+      'http://localhost:3002/api/products',
+      initialProduct
+    );
+    return response.data;
   }
 );
 
-export const productSlice = createSlice({
+const productsSlice = createSlice({
   name: 'products',
   initialState,
-  reducers: {},
+  reducers: {
+    /*productUpdated(state, action) {
+      const { id, title, price, quantity } = action.payload;
+      const existingProduct = state.entities[id];
+      if (existingProduct) {
+        existingProduct.title = title;
+        existingProduct.quantity = quantity;
+        existingProduct.price = price;
+      }
+    },*/
+  },
   extraReducers: {
     [fetchProducts.pending]: (state, action) => {
       state.status = 'loading';
     },
     [fetchProducts.fulfilled]: (state, action) => {
       state.status = 'succeeded';
-      // Add any fetched posts to the array
+      // Add any fetched products to the array
       state.products = state.products.concat(action.payload);
     },
     [fetchProducts.rejected]: (state, action) => {
       state.status = 'failed';
       state.error = action.error.message;
     },
-    [addNewProduct.fulfilled]: productsAdapter.addOne,
+    [addNewProduct.fulfilled]: (state, action) => {
+      // We can directly add the new post object to our posts array
+      state.products.push(action.payload);
+    },
   },
 });
 
-export const { productAdded } = productSlice.actions;
+export const { productUpdated } = productsSlice.actions;
 
-export const selectAllProducts = (state) => state.products;
+export const selectAllProducts = (state) => state.products.products;
 
 export const selectProductStatus = (state) => state.products.status;
+export const selectError = (state) => state.products.error;
 
-export default productSlice.reducer;
+export default productsSlice.reducer;
