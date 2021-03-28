@@ -2,8 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-const Product = require('./models/product');
-const User = require('./models/user');
+const productRoutes = require('./routes/product');
+const userRoutes = require('./routes/user');
 
 const app = express();
 
@@ -13,7 +13,7 @@ const url = process.env.MONGODB_URI;
 
 // Connect to MongoDB
 mongoose
-  .connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(url, { useNewUrlParser: true })
   .then(() => {
     console.log('Successfully connected to MongoDB Atlas!');
   })
@@ -37,45 +37,7 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.json());
 
-app.post('/api/stuff', (req, res, next) => {
-  console.log(req.body);
-  res.status(201).json({
-    message: 'Thing created successfully!',
-  });
-});
-
-app.post('/api/products', (req, res, next) => {
-  const product = new Product({
-    title: req.body.title,
-    quantity: req.body.quantity,
-    price: req.body.price,
-  });
-  console.log(product);
-
-  product
-    .save()
-    .then(() => {
-      res.status(201).json({
-        message: 'Post saved successfully!',
-      });
-    })
-    .catch((error) => {
-      res.status(400).json({
-        error: error,
-      });
-    });
-});
-
-app.use('/api/products', (req, res, next) => {
-  Product.find()
-    .then((products) => {
-      res.status(200).json(products);
-    })
-    .catch((error) => {
-      res.status(400).json({
-        error: error,
-      });
-    });
-});
+app.use('/api/products', productRoutes);
+app.use('/api/users', userRoutes);
 
 module.exports = app;
