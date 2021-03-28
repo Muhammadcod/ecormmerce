@@ -13,7 +13,7 @@
   "scripts": {
     "format": "prettier --write src/**/*.{js,jsx,ts,tsx}",
     "lint": "eslint --fix src/**/*.{js,jsx,ts,tsx}",
-    "start": "nodemon /backend/package.json/serve",
+    "start": "nodemon ./backend/package.json.serve",
     "move": "node start"
   }
 }

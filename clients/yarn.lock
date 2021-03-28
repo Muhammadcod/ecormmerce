@@ -7801,6 +7801,11 @@ open@^7.0.2:
     is-docker "^2.0.0"
     is-wsl "^2.1.1"
 
+openmoji@^13.0.0:
+  version "13.0.0"
+  resolved "https://registry.yarnpkg.com/openmoji/-/openmoji-13.0.0.tgz#691b53a1a5fa97fdee805f6cdecfe876c39fdc5e"
+  integrity sha512-w4zQ3HyMcYSdrXqwWqhlXRAvV4Vw97MmPCD03L6Rl+jzUfRMHnM04fdTaFZjP18EYaHugnxOaGVKxoHvn/rYHA==
+
 opn@^5.5.0:
   version "5.5.0"
   resolved "https://registry.yarnpkg.com/opn/-/opn-5.5.0.tgz#fc7164fab56d235904c51c3b27da6758ca3b9bfc"
