@@ -38,17 +38,7 @@ export const addNewProduct = createAsyncThunk(
 const productsSlice = createSlice({
   name: 'products',
   initialState,
-  reducers: {
-    /*productUpdated(state, action) {
-      const { id, title, price, quantity } = action.payload;
-      const existingProduct = state.entities[id];
-      if (existingProduct) {
-        existingProduct.title = title;
-        existingProduct.quantity = quantity;
-        existingProduct.price = price;
-      }
-    },*/
-  },
+  reducers: {},
   extraReducers: {
     [fetchProducts.pending]: (state, action) => {
       state.status = 'loading';
@@ -69,10 +59,9 @@ const productsSlice = createSlice({
   },
 });
 
-export const { productUpdated } = productsSlice.actions;
+export const {} = productsSlice.actions;
 
 export const selectAllProducts = (state) => state.products.products;
-
 export const selectProductStatus = (state) => state.products.status;
 export const selectError = (state) => state.products.error;
 
