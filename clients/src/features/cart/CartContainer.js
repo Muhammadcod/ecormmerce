@@ -1,9 +1,9 @@
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { withRouter, Redirect, Link } from 'react-router-dom';
-
-// import CartItem from '../components/dashboard/CartItem'
+import { withRouter } from 'react-router-dom';
+import CartItem from './CartItem';
+import { useSelector } from 'react-redux';
 
 const ModalView = styled.div`
   background-color: rgba(0, 0, 0, 0.5);
@@ -23,10 +23,13 @@ const ModalContent = styled.div`
 `;
 
 const CartContainer = (props) => {
-  /* useEffect(() => {
-        console.log('i am ready')
-        props.dispatch(handleCartData())
-    })*/
+  const selectUserCartItems = useSelector();
+  /*  useEffect(() => {
+    if (cartStatus === 'idle') {
+      dispatch(fetchUserCartItems());
+    }
+  }, [cartStatus, dispatch]);
+  */
 
   if (!props.show) {
     return null;
@@ -37,9 +40,9 @@ const CartContainer = (props) => {
       <ModalView onClick={props.onClose}>
         <ModalContent
           onClick={(event) => event.stopPropagation()}
-          // aria-hidden="true"
+          aria-hidden="true"
         >
-          {/*<div className="modal-header">
+          <div className="modal-header">
             <h5 className="modal-title">cart</h5>
           </div>
           <div className="modal-body">
@@ -53,15 +56,13 @@ const CartContainer = (props) => {
                     quantity={item.quantity}
                   />
                 ))}
-                <div className="cart-total-cost">
-                  Total cost: #{totalCost.toFixed(2)}
-                </div>
+                <div className="cart-total-cost">Total cost: #</div>
               </div>
             ) : (
               <div>Your cart is empty</div>
             )}
           </div>
-          <div className="modal-footer">...</div>*/}
+          <div className="modal-footer">...</div>
           <button onClick={props.onClose}>close</button>
         </ModalContent>
       </ModalView>
