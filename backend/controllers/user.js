@@ -57,7 +57,6 @@ exports.signup = (req, res, next) => {
       password: hash,
       role: req.body.role,
     });
-    console.log(user);
     user
       .save()
       .then(() => {
