@@ -13,7 +13,12 @@ const url = process.env.MONGODB_URI;
 
 // Connect to MongoDB
 mongoose
-  .connect(url, { useNewUrlParser: true })
+  .connect(
+    url,
+    { useCreateIndex: true },
+    { useNewUrlParser: true },
+    { useUnifiedTopology: true }
+  )
   .then(() => {
     console.log('Successfully connected to MongoDB Atlas!');
   })
@@ -58,7 +63,6 @@ app.use(async (req, res, next) => {
 app.use(bodyParser.json());
 
 app.use('/api/products', productRoutes);
-// app.use('/api/users', userRoutes);
 app.use('/', userRoutes);
 
 module.exports = app;
