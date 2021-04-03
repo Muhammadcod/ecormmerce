@@ -5,6 +5,6 @@ const productCtrl = require('../controllers/product');
 const auth = require('../middleware/auth');
 
 router.get('/', productCtrl.getProduct);
-router.post('/', auth, productCtrl.createProduct);
+router.post('/create', auth, productCtrl.createProduct);
 
 module.exports = router;
