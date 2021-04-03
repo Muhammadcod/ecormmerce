@@ -7,18 +7,15 @@ import { selectUserStatus, signUpUser } from './UsersSlice';
 import { fetchProducts, selectProductStatus } from '../products/productsSlice';
 
 const SignUp = (props) => {
-  const [addRequestStatus, setAddRequestStatus] = useState('idle');
   const {
     register,
     handleSubmit,
-    watch,
-    reset,
     errors,
     formState: { isSubmitSuccessful },
   } = useForm();
 
   const dispatch = useDispatch();
-  const userStatus = useSelector(selectUserStatus);
+  // const userStatus = useSelector(selectUserStatus);
 
   const onSubmit = (data) => {
     dispatch(signUpUser(data));
@@ -36,7 +33,7 @@ const SignUp = (props) => {
             typesetting industry.
           </p>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="form-group">
+            {/*<div className="form-group">
               <input
                 type="firstname"
                 className="form-control form-control__custom"
@@ -45,19 +42,8 @@ const SignUp = (props) => {
                 name="firstName"
                 placeholder="firstname"
               />
-            </div>
+            </div>*/}
             {errors.exampleRequired && <span>This field is required</span>}
-
-            <div className="form-group">
-              <input
-                type="lastname"
-                className="form-control form-control__custom"
-                id="exampleInputLastname1"
-                ref={register({ required: true })}
-                name="lastName"
-                placeholder="lastname"
-              />
-            </div>
 
             <div className="form-group">
               <input
