@@ -1,99 +1,101 @@
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import { unwrapResult } from '@reduxjs/toolkit';
+import React from 'react';
+import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { selectUserStatus, signUpUser } from './UsersSlice';
-import { fetchProducts, selectProductStatus } from '../products/productsSlice';
 
-const SignUp = (props) => {
-  const {
-    register,
-    handleSubmit,
-    errors,
-    formState: { isSubmitSuccessful },
-  } = useForm();
+const SignupWrapper = styled.div`
+  height: 100vh;
+`;
+
+const SignupContent = styled.div`
+  height: 100%;
+`;
+
+const GraffitiCol = styled.div``;
+
+const SignupCol = styled.div`
+  display: flex;
+  padding: 150px 60px;
+  align-items: start;
+`;
+const Input = styled.input`
+  width: 357px;
+  height: 63px;
+`;
+
+const SignUpButton = styled.button`
+  width: 357px;
+  height: 70px;
+  background: #24246f;
+  color: #ffffff;
+`;
+
+const SignUp = () => {
+  const { register, handleSubmit, errors } = useForm();
 
   const dispatch = useDispatch();
-  // const userStatus = useSelector(selectUserStatus);
 
   const onSubmit = (data) => {
     dispatch(signUpUser(data));
   };
-
   return (
-    <div>
-      <div className="container d-flex justify-content-center">
-        <div className="signup-form text-center">
-          <h5 className="login__text">
-            Create an account and <br /> discover the benefits
-          </h5>
-          <p className="small px-2 mb-5">
-            Lorem Ipsum is simply dummy text of the printing <br /> and
-            typesetting industry.
-          </p>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            {/*<div className="form-group">
-              <input
-                type="firstname"
-                className="form-control form-control__custom"
-                id="exampleInputFirstname1"
-                ref={register({ required: true })}
-                name="firstName"
-                placeholder="firstname"
-              />
-            </div>*/}
-            {errors.exampleRequired && <span>This field is required</span>}
-
-            <div className="form-group">
-              <input
-                type="email"
-                className="form-control form-control__custom"
-                id="exampleInputEmail1"
-                aria-describedby="emailHelp"
-                ref={register({ required: true })}
-                name="email"
-                placeholder="email"
-              />
-            </div>
-
-            <div className="form-group">
-              <input
-                type="password"
-                className="form-control form-control__custom small"
-                id="exampleInputPassword1"
-                ref={register({ required: true })}
-                name="password"
-                placeholder="password"
-              />
-            </div>
-
-            <div className="form-group form-check  mb-5">
-              <input
-                type="checkbox"
-                className="form-check-input form-control__custom"
-                id="exampleCheck1"
-              />
-              <label
-                className="form-check-label small text-left"
-                htmlFor="exampleCheck1"
-              >
-                I agree to the Google Terms of Service and Privacy Policy
-              </label>
-            </div>
-            <button type="submit" className="btn border btn__submit">
-              Sign up
-            </button>
-          </form>
-          <small className="form-text text-muted">
-            Are you already a member?
-          </small>
-        </div>
-      </div>
-    </div>
+    <>
+      <SignupWrapper className="container-fluid">
+        <SignupContent className="row">
+          <GraffitiCol className="col-sm-3 border">Graffiti</GraffitiCol>
+          <SignupCol className="col-sm border">
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <div className="mb-3">
+                <label htmlFor="exampleInputName1" className="form-label">
+                  Name
+                </label>
+                <Input
+                  type="name"
+                  className="form-control form-control-lg"
+                  id="exampleInputName1"
+                  aria-describedby="nameHelp"
+                  ref={register({ required: true })}
+                  name="name"
+                  placeholder="name"
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="exampleInputEmail1" className="form-label">
+                  Email
+                </label>
+                <Input
+                  type="email"
+                  className="form-control form-control-lg"
+                  id="exampleInputEmail1"
+                  aria-describedby="emailHelp"
+                  ref={register({ required: true })}
+                  name="email"
+                  placeholder="email"
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="exampleInputPassword1" className="form-label">
+                  Password
+                </label>
+                <Input
+                  type="password"
+                  className="form-control form-control-lg"
+                  id="exampleInputPassword1"
+                  ref={register({ required: true })}
+                  name="password"
+                  placeholder="password"
+                />
+              </div>
+              <SignUpButton type="submit" className="btn ">
+                Sign Up
+              </SignUpButton>
+            </form>
+          </SignupCol>
+        </SignupContent>
+      </SignupWrapper>
+    </>
   );
 };
-
-SignUp.propTypes = {};
 
 export default SignUp;
