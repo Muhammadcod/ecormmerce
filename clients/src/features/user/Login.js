@@ -1,66 +1,89 @@
 import React from 'react';
+import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
-import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { loginUser } from './UsersSlice';
 
-function Login(props) {
-  const { register, handleSubmit, watch, errors } = useForm();
+const LogInWrapper = styled.div`
+  height: 100vh;
+`;
+
+const LogInContent = styled.div`
+  height: 100%;
+`;
+
+const GraffitiCol = styled.div``;
+
+const LogInCol = styled.div`
+  display: flex;
+  padding: 150px 60px;
+  background-color: #f6f5fc;
+  align-items: start;
+`;
+const Input = styled.input`
+  width: 357px;
+  height: 63px;
+`;
+
+const LogInButton = styled.button`
+  width: 357px;
+  height: 70px;
+  background: #24246f;
+  color: #ffffff;
+`;
+
+const Login = () => {
+  const { register, handleSubmit, errors } = useForm();
   const dispatch = useDispatch();
 
   const onSubmit = (data) => {
     dispatch(loginUser(data));
   };
-  console.log(watch('example'));
-
   return (
-    <div>
-      <div className=" container d-flex justify-content-center">
-        <div className="login-form text-center">
-          <h5 className="login__text">Log in</h5>
-          <p className="small px-2 mb-5">
-            Lorem Ipsum is simply dummy text of the printing <br /> and
-            typesetting industry.
-          </p>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="form-group">
-              <input
-                type="email"
-                className="form-control form-control__custom"
-                id="exampleInputEmail1"
-                ref={register({ required: true })}
-                aria-describedby="emailHelp"
-                name="email"
-                placeholder="email"
-              />
-            </div>
-            <div className="form-group">
-              <input
-                type="password"
-                className="form-control form-control__custom"
-                id="exampleInputPassword1"
-                ref={register({ required: true })}
-                name="password"
-                placeholder="password"
-              />
-            </div>
-            {errors.exampleRequired && <span>This field is required</span>}
-            <button type="submit" className="btn btn__submit">
-              Sign in
-            </button>
-          </form>
-          <small className="form-text text-muted">
-            Not a member yet?
-            <a href="/">Sign up</a>
-          </small>
-        </div>
-      </div>
-    </div>
+    <>
+      <LogInWrapper className="container-fluid">
+        <LogInContent className="row">
+          <GraffitiCol className="col-sm-3 border">
+            One of three columns
+          </GraffitiCol>
+          <LogInCol className="col-sm border">
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <div className="mb-3">
+                <label htmlFor="exampleInputEmail1" className="form-label">
+                  Email
+                </label>
+                <Input
+                  type="email"
+                  className="form-control form-control-lg"
+                  id="exampleInputEmail1"
+                  aria-describedby="emailHelp"
+                  ref={register({ required: true })}
+                  name="email"
+                  placeholder="email"
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="exampleInputPassword1" className="form-label">
+                  Password
+                </label>
+                <Input
+                  type="password"
+                  className="form-control form-control-lg"
+                  id="exampleInputPassword1"
+                  ref={register({ required: true })}
+                  name="password"
+                  placeholder="password"
+                />
+              </div>
+              <LogInButton type="submit" className="btn ">
+                Log In
+              </LogInButton>
+            </form>
+          </LogInCol>
+        </LogInContent>
+      </LogInWrapper>
+    </>
   );
-}
-
-Login.propTypes = {
-  signIn: PropTypes.func,
 };
 
 export default Login;
