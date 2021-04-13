@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const productRoutes = require('./routes/product');
 const userRoutes = require('./routes/user');
+const cartRoutes = require('./routes/cart');
 
 const app = express();
 
@@ -13,12 +14,11 @@ const url = process.env.MONGODB_URI;
 
 // Connect to MongoDB
 mongoose
-  .connect(
-    url,
-    { useCreateIndex: true },
-    { useNewUrlParser: true },
-    { useUnifiedTopology: true }
-  )
+  .connect(url, {
+    useCreateIndex: true,
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => {
     console.log('Successfully connected to MongoDB Atlas!');
   })
@@ -62,7 +62,8 @@ app.use(async (req, res, next) => {
 
 app.use(bodyParser.json());
 
-app.use('/api/products', productRoutes);
+app.use('/api', productRoutes);
 app.use('/', userRoutes);
+app.use('/carts', cartRoutes);
 
 module.exports = app;

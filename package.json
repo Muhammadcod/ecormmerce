@@ -6,6 +6,7 @@
   "author": "adebayo mohammed <adebayomuhammad73@gmail.com>",
   "license": "MIT",
   "devDependencies": {
+    "concurrently": "^6.0.1",
     "eslint": "^7.22.0",
     "eslint-config-airbnb-typescript-prettier": "^4.2.0",
     "prettier": "^2.2.1"
@@ -13,7 +14,7 @@
   "scripts": {
     "format": "prettier --write src/**/*.{js,jsx,ts,tsx}",
     "lint": "eslint --fix src/**/*.{js,jsx,ts,tsx}",
-    "start": "nodemon ./backend/package.json.serve",
+    "start": " concurrently \"yarn --cwd ./backend serve\" \" yarn --cwd ./clients start\"",
     "move": "node start"
   }
 }

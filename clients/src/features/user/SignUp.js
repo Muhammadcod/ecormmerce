@@ -37,6 +37,8 @@ const SignUp = () => {
   const dispatch = useDispatch();
 
   const onSubmit = (data) => {
+    console.log('submit', data);
+
     dispatch(signUpUser(data));
   };
   return (

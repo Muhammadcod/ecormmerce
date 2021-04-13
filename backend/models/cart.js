@@ -1,17 +1,20 @@
 const mongoose = require('mongoose');
 
 const productSchema = mongoose.Schema({
-  productId: { type: String, required: true, unique: true },
+  productId: { type: mongoose.ObjectId, required: true, unique: true },
   price: { type: Number, required: true },
-  selectedQuantity: { type: Number, required: true },
+  selectedQuantity: { type: Number, required: false },
   name: { type: String, required: true },
+  modifiedOn: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 const cartSchema = mongoose.Schema(
   {
-    userTokenId: { type: String, required: true, unique: true },
-    userFirstName: { type: String, required: true },
-    userLastName: { type: String, required: true },
+    customerId: { type: mongoose.ObjectId, required: true, unique: true },
+    customerName: { type: String, required: true },
     products: [productSchema],
   },
   {
@@ -19,4 +22,4 @@ const cartSchema = mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model('User', cartSchema);
+module.exports = mongoose.model('Cart', cartSchema);

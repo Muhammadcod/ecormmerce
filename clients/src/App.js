@@ -8,14 +8,14 @@ import Login from './features/user/Login';
 
 function App() {
   return (
-    <div className="App container">
+    <>
       <Switch>
         <Route path="/" exact component={ProductContainer} />
         <Route path="/signup" exact component={SignUp} />
         <Route path="/login" exact component={Login} />
         <Route path="/create" exact component={AddNewProduct} />
       </Switch>
-    </div>
+    </>
   );
 }
 

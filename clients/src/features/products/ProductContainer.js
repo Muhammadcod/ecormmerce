@@ -30,16 +30,22 @@ const ProductContainer = (props) => {
     // Sort posts in reverse chronological order by datetime string
     const orderedProducts = products
       .slice()
-      .sort((a, b) => b.date.localeCompare(a.date));
+      .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 
     content = orderedProducts.map((product) => (
-      <Product key={product.id} product={product} />
+      <Product key={product._id} product={product} />
     ));
   } else if (productStatus === 'failed') {
     content = <div>{error}</div>;
   }
 
-  return <>{content}</>;
+  return (
+    <>
+      <div className="container">
+        <div className="row">{content}</div>
+      </div>
+    </>
+  );
 };
 
 /*ProductContainer.propTypes = {

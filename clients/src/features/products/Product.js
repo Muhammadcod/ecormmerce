@@ -3,37 +3,35 @@ import PropTypes from 'prop-types';
 // import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import CartContainer from '../cart/CartContainer';
+import { useSelector, useDispatch } from 'react-redux';
+import { addCartItem } from '../cart/CartsSlice';
+import { selectProductStatus } from './productsSlice';
 
 const Frame = styled.div`
   border: 1px solid black;
-  border-radius: 15px;
+  // border-radius: 15px;
   padding: 12px;
-  height: 250px;
-  margin: 5px;
+  height: 360px;
 `;
 
 const ProductCard = styled.div`
-  border-radius: 15px;
-  padding: 15px;
-  border: 1px solid black;
+  height: auto;
 `;
 
 const ProductCardBody = styled.div`
-  padding: 15px;
+  padding: 15px 0;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
 `;
 
 const ProductPrice = styled.span``;
-const CartIcon = styled.span`
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
+const CartButton = styled.button`
+  width: 100%;
+  height: 50px;
+  background: #000;
+  color: #fff;
   text-align: center;
   padding-top: 2px;
   padding-left: 1px;
-  background-color: yellow;
 `;
 const ProductTitle = styled.p`
   font-size: 14px;
@@ -43,9 +41,20 @@ const ProductTitle = styled.p`
 const Product = ({ product }) => {
   const [show, setShow] = useState(false);
   const { title, price, _id } = product;
+  const item = {
+    name: title,
+    price,
+    productId: _id,
+  };
+  const dispatch = useDispatch();
+  // const productStatus = useSelector(selectProductStatus);
 
-  const click = () => {
-    setShow(true);
+  const handleAddToCart = () => {
+    dispatch(addCartItem(item));
+    // console.log('one', item);
+
+    // setCart(product);
+    // setShow(true);
   };
   return (
     <>
@@ -54,7 +63,9 @@ const Product = ({ product }) => {
           <Frame>image</Frame>
           <ProductCardBody>
             <div>
-              <ProductTitle>{title}</ProductTitle>
+              <ProductTitle>
+                {title.length > 25 ? title.substring(0, 24) + '...' : title}
+              </ProductTitle>
               <ProductPrice>
                 {new Intl.NumberFormat('en-NG', {
                   style: 'currency',
@@ -63,8 +74,8 @@ const Product = ({ product }) => {
                 }).format(price)}
               </ProductPrice>
             </div>
-            <CartIcon onClick={click}>A</CartIcon>
           </ProductCardBody>
+          <CartButton onClick={handleAddToCart}>Add To Cart</CartButton>
         </ProductCard>
       </div>
       <CartContainer show={show} onClose={() => setShow(false)} />

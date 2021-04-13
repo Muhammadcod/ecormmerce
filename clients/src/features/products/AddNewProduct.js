@@ -1,23 +1,23 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useSelector, useDispatch } from 'react-redux';
-import { addNewProduct } from './productsSlice';
-// import PropTypes from 'prop-types';
-
-/*AddNewProduct.propTypes = {
-
-};*/
+import {
+  addNewProduct,
+  selectError,
+  selectProductStatus,
+} from './productsSlice';
 
 function AddNewProduct({}) {
-  const dispatch = useDispatch();
-  // const seletor =use
-
   const { register, handleSubmit, watch, errors } = useForm();
+  const dispatch = useDispatch();
+  const productStatus = useSelector(selectProductStatus);
+  const error = useSelector(selectError);
   const onSubmit = (data) => {
     dispatch(addNewProduct(data));
   };
 
-  console.log(watch('example')); // watch input value by passing the name of it
+  if (productStatus === 'failed') {
+  }
 
   return (
     <>
@@ -61,10 +61,23 @@ function AddNewProduct({}) {
               ref={register}
             />
           </div>
-
-          <button type="submit" className="btn btn-primary">
-            Submit
-          </button>
+          {productStatus === 'loading' ? (
+            <button type="submit" className="btn btn-primary">
+              Adding...
+            </button>
+          ) : productStatus === 'succeeded' ? (
+            <button type="submit" className="btn btn-primary">
+              Added
+            </button>
+          ) : productStatus === 'failed' ? (
+            <button type="submit" className="btn btn-primary">
+              Failed
+            </button>
+          ) : (
+            <button type="submit" className="btn btn-primary">
+              Submit
+            </button>
+          )}
         </form>
       </div>
     </>

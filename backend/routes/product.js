@@ -4,7 +4,7 @@ const router = express.Router();
 const productCtrl = require('../controllers/product');
 const auth = require('../middleware/auth');
 
-router.get('/', productCtrl.getProduct);
-router.post('/create', auth, productCtrl.createProduct);
+router.get('/products', productCtrl.getProduct);
+router.post('/create', productCtrl.createProduct);
 
 module.exports = router;

@@ -5,9 +5,9 @@ import {
 } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const productsAdapter = createEntityAdapter({
+/* const productsAdapter = createEntityAdapter({
   sortComparer: (a, b) => b.date.localeCompare(a.date),
-});
+}); */
 
 const initialState = {
   products: [],
@@ -25,12 +25,14 @@ export const fetchProducts = createAsyncThunk(
 
 export const addNewProduct = createAsyncThunk(
   'product/addProduct',
+
   async (initialProduct) => {
-    console.log('===', initialProduct);
     const response = await axios.post(
-      'http://localhost:3002/api/products',
+      'http://localhost:3002/api/create',
       initialProduct
     );
+
+    // console.log('===', response.data);
     return response.data;
   }
 );
@@ -52,14 +54,20 @@ const productsSlice = createSlice({
       state.status = 'failed';
       state.error = action.error.message;
     },
+    [addNewProduct.pending]: (state, action) => {
+      state.status = 'loading';
+    },
     [addNewProduct.fulfilled]: (state, action) => {
-      // We can directly add the new post object to our posts array
-      state.products.push(action.payload);
+      state.status = 'succeeded';
+    },
+    [addNewProduct.rejected]: (state, action) => {
+      state.status = 'failed';
+      state.error = action.error.message;
     },
   },
 });
 
-export const {} = productsSlice.actions;
+// export const {} = productsSlice.actions;
 
 export const selectAllProducts = (state) => state.products.products;
 export const selectProductStatus = (state) => state.products.status;

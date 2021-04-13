@@ -17,18 +17,11 @@ export const loginUser = createAsyncThunk(
   }
 );
 
-const usersAdapter = createEntityAdapter({
-  sortComparer: (a, b) => b.date.localeCompare(a.date),
-});
-
-const initialState = usersAdapter.getInitialState({
-  status: 'idle',
-  error: null,
-});
-
 export const signUpUser = createAsyncThunk(
   'user/signUpUser',
   async (userProfile) => {
+    console.log('===', userProfile);
+
     const response = await axios.post(
       'http://localhost:3002/signup',
       userProfile
@@ -36,6 +29,12 @@ export const signUpUser = createAsyncThunk(
     return response.data;
   }
 );
+
+const initialState = {
+  user: [],
+  status: 'idle',
+  error: null,
+};
 
 const usersSlice = createSlice({
   name: 'users',
@@ -46,8 +45,11 @@ const usersSlice = createSlice({
       state.status = 'loading';
     },
     [loginUser.fulfilled]: (state, action) => {
-      state.status = 'succeeded';
+      const { token, ...rest } = action.payload;
+      state.status = 'succeed';
+      state.user = state.user.concat(rest);
     },
+
     [loginUser.rejected]: (state, action) => {
       state.status = 'failed';
       state.error = action.error.message;

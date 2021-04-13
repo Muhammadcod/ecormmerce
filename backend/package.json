@@ -16,6 +16,6 @@
     "nodemon": "^2.0.7"
   },
   "scripts": {
-    "serve": "nodemon server"
+    "serve": "nodemon  --trace-warnings server"
   }
 }

@@ -23,7 +23,7 @@ const ModalContent = styled.div`
 `;
 
 const CartContainer = (props) => {
-  const selectUserCartItems = useSelector();
+  // const selectUserCartItems = useSelector();
   /*  useEffect(() => {
     if (cartStatus === 'idle') {
       dispatch(fetchUserCartItems());
@@ -46,9 +46,9 @@ const CartContainer = (props) => {
             <h5 className="modal-title">cart</h5>
           </div>
           <div className="modal-body">
-            {props.itemsInCart.length > 0 ? (
+            {props.cart.length > 0 ? (
               <div>
-                {props.itemsInCart.map((item) => (
+                {props.cart.map((item) => (
                   <CartItem
                     key={item.id}
                     title={item.title}

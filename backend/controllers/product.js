@@ -6,7 +6,7 @@ exports.createProduct = (req, res, next) => {
     quantity: req.body.quantity,
     price: req.body.price,
   });
-  console.log(product);
+  console.log('controller', product);
 
   product
     .save()
