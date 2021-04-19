@@ -1,35 +1,69 @@
 const Cart = require('../models/cart');
 
 exports.createCart = (req, res, next) => {
-  const cart = new Cart({
-    customerId: req.body.customerId,
-    customerName: req.body.customerName,
-    products: [
-      {
-        productId: req.body.productId,
-        price: req.body.price,
-        selectedQuantity: req.body.selectedQuantity,
-        name: req.body.name,
-      },
-    ],
-  });
+  const {
+    productId,
+    price,
+    selectedQuantity,
+    name,
+    customerId,
+    customerName,
+  } = req.body;
 
-  cart
-    .save()
-    .then(() => {
-      res.status(201).json({
-        message: 'Cart saved successfully!',
+  Cart.findOne({ customerId }).then((cart) => {
+    if (!cart) {
+      const cart = new Cart({
+        customerId,
+        customerName,
+        products: [
+          {
+            productId,
+            price: price,
+            selectedQuantity,
+            name: name,
+          },
+        ],
       });
-    })
-    .catch((error) => {
-      res.status(400).json({
-        error: error,
+      cart
+        .save()
+        .then(() => {
+          res.status(201).json({
+            message: 'Item saved successfully!',
+          });
+        })
+        .catch((error) => {
+          res.status(400).json({
+            error: error,
+          });
+        });
+    } else {
+      let inCart = cart.products.findIndex((p) => p.productId == productId);
+      console.log(inCart);
+
+      if (inCart == -1) {
+        cart.products.push({
+          productId,
+          price,
+          selectedQuantity,
+          name,
+        });
+      } else {
+        let productItem;
+        productItem = cart.products[inCart];
+        productItem.selectedQuantity += selectedQuantity;
+        cart.products[inCart] = productItem;
+      }
+      cart.save().then((cart) => {
+        res.status(201).json({
+          message: 'saved',
+        });
       });
-    });
+    }
+  });
 };
 
-exports.getCart = (req, res, next) => {
-  Cart.find({ customerId: req.body.user._id })
+exports.getUserCart = (req, res, next) => {
+  Cart.findOne({ customerId: req.query.id })
     .then((cart) => {
       res.status(200).json(cart);
     })
