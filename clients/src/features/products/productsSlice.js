@@ -1,13 +1,5 @@
-import {
-  createSlice,
-  createAsyncThunk,
-  createEntityAdapter,
-} from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-
-/* const productsAdapter = createEntityAdapter({
-  sortComparer: (a, b) => b.date.localeCompare(a.date),
-}); */
 
 const initialState = {
   products: [],

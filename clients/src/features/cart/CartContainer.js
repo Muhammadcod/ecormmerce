@@ -1,9 +1,11 @@
+import React from 'react';
 import ReactDOM from 'react-dom';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
 import CartItem from './CartItem';
-import { useSelector } from 'react-redux';
+import { fetchUserCartItems, selectAllItems } from './CartsSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const ModalView = styled.div`
   background-color: rgba(0, 0, 0, 0.5);
@@ -17,19 +19,20 @@ const ModalView = styled.div`
   align-items: center;
 `;
 const ModalContent = styled.div`
-  width: 400px;
+  width: 500px;
   height: 100%;
   background-color: #fff;
 `;
 
 const CartContainer = (props) => {
-  // const selectUserCartItems = useSelector();
-  /*  useEffect(() => {
-    if (cartStatus === 'idle') {
-      dispatch(fetchUserCartItems());
-    }
-  }, [cartStatus, dispatch]);
-  */
+  const dispatch = useDispatch();
+  const cartItems = useSelector(selectAllItems);
+  // const cartStatus = useSelector(selectCartStatus);
+  const { customerId } = props;
+
+  React.useEffect(() => {
+    dispatch(fetchUserCartItems(customerId));
+  }, [customerId]);
 
   if (!props.show) {
     return null;
@@ -45,16 +48,11 @@ const CartContainer = (props) => {
           <div className="modal-header">
             <h5 className="modal-title">cart</h5>
           </div>
-          <div className="modal-body">
-            {props.cart.length > 0 ? (
+          <div className="modal-body ">
+            {cartItems.length > -1 ? (
               <div>
-                {props.cart.map((item) => (
-                  <CartItem
-                    key={item.id}
-                    title={item.title}
-                    cost={item.price * item.quantity}
-                    quantity={item.quantity}
-                  />
+                {cartItems.map((item) => (
+                  <CartItem key={item._id} item={item} />
                 ))}
                 <div className="cart-total-cost">Total cost: #</div>
               </div>

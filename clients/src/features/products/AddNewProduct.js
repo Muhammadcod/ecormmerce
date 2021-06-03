@@ -1,17 +1,13 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  addNewProduct,
-  selectError,
-  selectProductStatus,
-} from './productsSlice';
+import { addNewProduct, selectProductStatus } from './productsSlice';
 
-function AddNewProduct({}) {
-  const { register, handleSubmit, watch, errors } = useForm();
+function AddNewProduct() {
+  const { register, handleSubmit } = useForm();
   const dispatch = useDispatch();
   const productStatus = useSelector(selectProductStatus);
-  const error = useSelector(selectError);
+  // const error = useSelector(selectError);
   const onSubmit = (data) => {
     dispatch(addNewProduct(data));
   };

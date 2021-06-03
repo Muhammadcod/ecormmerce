@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
-import { selectUserStatus, signUpUser } from './UsersSlice';
+import { signUpUser } from './UsersSlice';
 
 const SignupWrapper = styled.div`
   height: 100vh;
@@ -32,7 +32,7 @@ const SignUpButton = styled.button`
 `;
 
 const SignUp = () => {
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit } = useForm();
 
   const dispatch = useDispatch();
 

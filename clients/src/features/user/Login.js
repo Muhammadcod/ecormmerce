@@ -33,12 +33,22 @@ const LogInButton = styled.button`
 `;
 
 const Login = () => {
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit } = useForm();
   const dispatch = useDispatch();
 
   const onSubmit = (data) => {
-    dispatch(loginUser(data));
+    dispatch(loginUser(data)).then((response) => {
+      // let data = response.payload.data;
+      if (response.payload === undefined || response.error) {
+        console.log('failure');
+      } else {
+        sessionStorage.setItem('jwtToken', response.payload.token);
+
+        console.log('success');
+      }
+    });
   };
+
   return (
     <>
       <LogInWrapper className="container-fluid">

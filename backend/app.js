@@ -63,7 +63,7 @@ app.use(async (req, res, next) => {
 app.use(bodyParser.json());
 
 app.use('/api', productRoutes);
-app.use('/', userRoutes);
+app.use('/user', userRoutes);
 app.use('/carts', cartRoutes);
 
 module.exports = app;

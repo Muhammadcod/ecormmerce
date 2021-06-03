@@ -42,7 +42,7 @@ const ProductContainer = (props) => {
   return (
     <>
       <div className="container">
-        <div className="row">{content}</div>
+        <div className="row g-5">{content}</div>
       </div>
     </>
   );

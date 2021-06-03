@@ -73,7 +73,7 @@ exports.signup = (req, res, next) => {
   });
 };
 
-exports.login = (req, res, next) => {
+module.exports.login = (req, res, next) => {
   User.findOne({ email: req.body.email })
     .then((user) => {
       if (!user) {
@@ -110,6 +110,32 @@ exports.login = (req, res, next) => {
         error: error,
       });
     });
+};
+
+exports.getCurrentUser = (req, res, next) => {
+  let token =
+    req.body.token || req.query.token || req.headers['x-access-token'];
+  console.log('==', token);
+  if (!token) {
+    return res.status(401).json({
+      message: 'Must pass token',
+    });
+  }
+  jwt.verify(token, process.env.jwtSecret, function (err, user) {
+    if (err) throw err;
+    User.findById(
+      {
+        _id: user._id,
+      },
+      function (err, user) {
+        if (err) throw err;
+        res.json({
+          user: user,
+          token: token,
+        });
+      }
+    );
+  });
 };
 
 exports.getUsers = async (req, res, next) => {

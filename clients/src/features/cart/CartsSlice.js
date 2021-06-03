@@ -6,26 +6,28 @@ import {
 import axios from 'axios';
 
 const cartsAdapter = createEntityAdapter({
-  selectId: ({ id }) => id,
-  sortComparer: (a, b) => b.date.localeCompare(a.date),
+  selectId: (products) => products._id,
 });
 
-export const fetchCarts = createAsyncThunk('Carts/fetchCarts', async () => {
-  const response = await axios.get('http://localhost:3002/api/carts');
-  return response.data;
-});
+export const fetchUserCartItems = createAsyncThunk(
+  'Carts/fetchCarts',
+  async (user) => {
+    const response = await axios.get(
+      `http://localhost:3002/carts/cart?id=${user}`
+    );
+    return response.data.products;
+  }
+);
 
 export const addCartItem = createAsyncThunk(
   'cart/addToCart',
-
   async (product) => {
     const response = await axios.post(
       'http://localhost:3002/carts/add-to-cart',
       product
     );
 
-    // console.log('===', response.data);
-    // return response.data;
+    return response.data.products;
   }
 );
 
@@ -37,44 +39,41 @@ const initialState = cartsAdapter.getInitialState({
 const cartsSlice = createSlice({
   name: 'carts',
   initialState,
-  reducers: {
-    addCart: cartsAdapter.addOne,
-  },
-  extraReducers: {
-    [addCartItem.pending]: (state, action) => {
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(fetchUserCartItems.pending, (state, action) => {
       state.status = 'loading';
-    },
-    [addCartItem.fulfilled]: (state, action) => {
-      state.status = 'succeeded';
-    },
-    [addCartItem.rejected]: (state, action) => {
+    });
+    builder.addCase(fetchUserCartItems.rejected, (state, action) => {
       state.status = 'failed';
-      state.error = action.error.message;
-    },
-    /*[fetchProducts.pending]: (state, action) => {
+    });
+    builder.addCase(fetchUserCartItems.fulfilled, (state, action) => {
+      cartsAdapter.upsertMany(state, action.payload);
+      state.status = 'succeed';
+    });
+    builder.addCase(addCartItem.pending, (state, action) => {
       state.status = 'loading';
-    },
-    [fetchProducts.fulfilled]: (state, action) => {
-      state.status = 'succeeded';
-      // Add any fetched products to the array
-      state.products = state.products.concat(action.payload);
-    },
-    [fetchProducts.rejected]: (state, action) => {
+    });
+    builder.addCase(addCartItem.rejected, (state, action) => {
       state.status = 'failed';
-      state.error = action.error.message;
-    },
-    [addNewProduct.fulfilled]: (state, action) => {
-      // We can directly add the new post object to our posts array
-      state.products.push(action.payload);
-    },*/
+    });
+    builder.addCase(addCartItem.fulfilled, (state, action) => {
+      state.status = 'succeed';
+      cartsAdapter.upsertMany(state, action.payload);
+    });
   },
 });
 
-export const {} = cartsSlice.actions;
+export const { addToCart } = cartsSlice.actions;
 
-/*export const selectAllProducts = (state) => state.products.products;
-
-export const selectProductStatus = (state) => state.products.status;
-export const selectError = (state) => state.products.error;*/
+// export const selectCartItems = (state) => state.carts.entities;
+// export const selectCartStatus = (state) => state.carts.status;
+export const {
+  selectById: selectUserById,
+  selectIds: selectItemsIds,
+  selectEntities: selectCartEntities,
+  selectAll: selectAllItems,
+  selectTotal: selectTotalUsers,
+} = cartsAdapter.getSelectors((state) => state.carts);
 
 export default cartsSlice.reducer;

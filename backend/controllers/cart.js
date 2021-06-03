@@ -27,9 +27,7 @@ exports.createCart = (req, res, next) => {
       cart
         .save()
         .then(() => {
-          res.status(201).json({
-            message: 'Item saved successfully!',
-          });
+          res.status(201).json(cart);
         })
         .catch((error) => {
           res.status(400).json({
@@ -38,7 +36,6 @@ exports.createCart = (req, res, next) => {
         });
     } else {
       let inCart = cart.products.findIndex((p) => p.productId == productId);
-      console.log(inCart);
 
       if (inCart == -1) {
         cart.products.push({
@@ -53,11 +50,16 @@ exports.createCart = (req, res, next) => {
         productItem.selectedQuantity += selectedQuantity;
         cart.products[inCart] = productItem;
       }
-      cart.save().then((cart) => {
-        res.status(201).json({
-          message: 'saved',
+      cart
+        .save()
+        .then((cart) => {
+          res.status(201).json(cart);
+        })
+        .catch((error) => {
+          res.status(400).json({
+            error: error,
+          });
         });
-      });
     }
   });
 };

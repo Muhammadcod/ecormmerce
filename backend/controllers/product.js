@@ -1,9 +1,22 @@
 const Product = require('../models/product');
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+  destination: (req, file, callback) => {
+    callback(null, './clients/public/uploads/');
+  },
+  filename: (req, file, callback) => {
+    callback(null, file.originalname);
+  },
+});
+
+exports.upload = multer({ storage: storage });
 
 exports.createProduct = (req, res, next) => {
   const product = new Product({
     title: req.body.title,
     quantity: req.body.quantity,
+    productImage: req.file.productImage,
     price: req.body.price,
   });
   console.log('controller', product);

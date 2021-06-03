@@ -6,6 +6,7 @@ const userCtrl = require('../controllers/user');
 // router.get('/', userCtrl.getUsers);
 router.post('/signup', userCtrl.signup);
 router.post('/login', userCtrl.login);
+router.get('/current', userCtrl.getCurrentUser);
 
 /*router.get('/user/:userId', userCtrl.allowIfLoggedin, userCtrl.getUser);
 router.get(

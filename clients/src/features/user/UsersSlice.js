@@ -1,8 +1,4 @@
-import {
-  createSlice,
-  createAsyncThunk,
-  createEntityAdapter,
-} from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 export const loginUser = createAsyncThunk(
@@ -10,8 +6,20 @@ export const loginUser = createAsyncThunk(
   async (userDetails) => {
     console.log('===', userDetails);
     const response = await axios.post(
-      'http://localhost:3002/login',
+      'http://localhost:3002/user/login',
       userDetails
+    );
+    return response.data;
+  }
+);
+
+export const getCurrentUser = createAsyncThunk(
+  'user/getCurrentUser',
+  async (userToken) => {
+    console.log('===', userToken);
+    const response = await axios.post(
+      'http://localhost:3002/user/current',
+      userToken
     );
     return response.data;
   }
@@ -23,7 +31,7 @@ export const signUpUser = createAsyncThunk(
     console.log('===', userProfile);
 
     const response = await axios.post(
-      'http://localhost:3002/signup',
+      'http://localhost:3002/user/signup',
       userProfile
     );
     return response.data;
@@ -61,6 +69,16 @@ const usersSlice = createSlice({
       state.status = 'succeeded';
     },
     [signUpUser.rejected]: (state, action) => {
+      state.status = 'failed';
+      state.error = action.error.message;
+    },
+    [getCurrentUser.pending]: (state, action) => {
+      state.status = 'loading';
+    },
+    [getCurrentUser.fulfilled]: (state, action) => {
+      state.status = 'succeeded';
+    },
+    [getCurrentUser.rejected]: (state, action) => {
       state.status = 'failed';
       state.error = action.error.message;
     },
